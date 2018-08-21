@@ -37,7 +37,7 @@ const UsersController = {
 
       if (userId) {
         // If user was successfully added, create a token
-        var token = jwt.sign({ id: userId }, config.secret, {
+        const token = jwt.sign({ id: userId }, config.secret, {
           expiresIn: 86400 // expires in 24 hours
         });
         res.status(200).send({ auth: true, token: token });
