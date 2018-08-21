@@ -4,6 +4,10 @@ exports.up = function(knex, Promise) {
     table.increments('id');
     table.string('title');
     table.text('description');
+    table.string('category');
+    table.boolean('public');
+    table.integer('group_size');
+    table.integer('owner').references('users.id').onDelete('CASCADE');
     table.timestamps(false, true);
   });
 };

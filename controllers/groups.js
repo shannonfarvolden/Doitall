@@ -14,8 +14,7 @@ const GroupsController = {
 
   //POST: Creating new group
   async create (req, res, next) {
-    const title = "Test Title";
-    const description = "Test Description" ;
+    const {title, description} =  req.body;
     try {
       await knex
         .insert({title, description})
