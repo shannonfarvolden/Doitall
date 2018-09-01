@@ -20,6 +20,7 @@ root.get("/api/test", (req, res) => {
 root.use('/api/me', UsersController.me);
 root.use('/api/users', users);
 users.get('/', UsersController.index);
+users.get('/:id', UsersController.show);
 users.post('/', UsersController.create);
 
 // Session Routes

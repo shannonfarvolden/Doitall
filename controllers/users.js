@@ -3,18 +3,32 @@ const bcrypt = require('bcryptjs');
 const config = require('../config');
 const knex = require('../db');
 
+// TODO: There are many things to refactor in this file since we are now using GraphQL.
+//We probably not going to use req, res, next since data value is coming from Graphql.
 const UsersController = {
   //TODO: Only admin should be authorized
   // GET: List all the users
   index (req, res, next) {
-    knex
+    return knex
       .select()
       .from('users')
       .orderBy('created_at', 'DESC')
-      .then(users => {
-        res.json(users);
-      })
-      .catch(error => res.send(error));
+      .then(users => { return users })
+      // .then(users => {  // -> for testing on postman
+      //   res.json(users);
+      // })
+      // .catch(error => res.send(error));
+  },
+
+  // show (req, res) {
+  show (id) {
+    // const id = req.params.id;
+    return knex
+      .first()
+      .from('users')
+      .where({id})
+      .then(user => { return user })
+      // .catch(error => res.send(error));
   },
 
   //POST: Creating a new user
