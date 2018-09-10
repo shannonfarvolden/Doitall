@@ -1,18 +1,31 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressGraphQL = require('express-graphql');
+const fs = require('fs');
+const path = require('path');
+const { makeExecutableSchema } = require('graphql-tools');
+const { Client } = require('pg');
 const app = express();
 const root = require('./routes');
 
-app.use(bodyParser.urlencoded({extended: true}));
+const schema = require('./graphql/schema');
 
-app.use(root);
+const start = async () => {
+    // make database connections
+    const pgClient = new Client('postgresql://localhost:5432/doitall_dev');
+    await pgClient.connect();
 
-// handle errors
-app.use((err, req, res, next) => {
-  res.status(500).send(err);
-})
+    var app = express();
+    app.use('/graphql', expressGraphQL({
+        schema: schema,
+        graphiql: true,
+        context: { pgClient },
+    }));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🖥 Server listenning on PORT: ${PORT}`);
-});
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`🖥 Server listenning on PORT: ${PORT}`);
+    });
+};
+
+start();
