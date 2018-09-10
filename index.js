@@ -7,13 +7,8 @@ const { makeExecutableSchema } = require('graphql-tools');
 const { Client } = require('pg');
 const app = express();
 const root = require('./routes');
-const resolvers = require('./graphql/resolvers');
 
-const schemaFile = path.join(__dirname, 'graphql/schema.graphql');
-const typeDefs = fs.readFileSync(schemaFile, 'utf8');
-
-const schema = makeExecutableSchema({ typeDefs, resolvers});
-
+const schema = require('./graphql/schema');
 
 const start = async () => {
     // make database connections
