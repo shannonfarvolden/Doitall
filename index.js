@@ -1,7 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressGraphQL = require('express-graphql');
 const app = express();
+const schema = require('./schema/schema');
 const root = require('./routes');
+
+app.use('/graphql', expressGraphQL({
+  schema: schema,
+  graphiql: true,
+}));
 
 app.use(bodyParser.urlencoded({extended: true}));
 
