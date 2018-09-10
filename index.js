@@ -1,25 +1,36 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const expressGraphQL = require('express-graphql');
+const fs = require('fs');
+const path = require('path');
+const { makeExecutableSchema } = require('graphql-tools');
+const { Client } = require('pg');
 const app = express();
-const schema = require('./schema/schema');
 const root = require('./routes');
+const resolvers = require('./graphql/resolvers');
 
-app.use('/graphql', expressGraphQL({
-  schema: schema,
-  graphiql: true,
-}));
+const schemaFile = path.join(__dirname, 'graphql/schema.graphql');
+const typeDefs = fs.readFileSync(schemaFile, 'utf8');
 
-app.use(bodyParser.urlencoded({extended: true}));
+const schema = makeExecutableSchema({ typeDefs, resolvers});
 
-app.use(root);
 
-// handle errors
-app.use((err, req, res, next) => {
-  res.status(500).send(err);
-})
+const start = async () => {
+    // make database connections
+    const pgClient = new Client('postgresql://localhost:5432/doitall_dev');
+    await pgClient.connect();
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`🖥 Server listenning on PORT: ${PORT}`);
-});
+    var app = express();
+    app.use('/graphql', expressGraphQL({
+        schema: schema,
+        graphiql: true,
+        context: { pgClient },
+    }));
+
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`🖥 Server listenning on PORT: ${PORT}`);
+    });
+};
+
+start();
