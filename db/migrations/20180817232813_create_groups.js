@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
     table.text('description');
     table.string('category');
     table.boolean('public');
-    table.integer('group_size');
+    table.integer('size_limit');
     table.integer('owner').references('users.id').onDelete('CASCADE');
     table.timestamps(false, true);
   });
