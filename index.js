@@ -1,25 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const expressGraphQL = require('express-graphql');
-const fs = require('fs');
-const path = require('path');
-const { makeExecutableSchema } = require('graphql-tools');
-const { Client } = require('pg');
 const app = express();
+const knex = require('./db');
+const schema = require('./graphql/schema');
 const root = require('./routes');
 
-const schema = require('./graphql/schema');
-
 const start = async () => {
-    // make database connections
-    const pgClient = new Client('postgresql://localhost:5432/doitall_dev');
-    await pgClient.connect();
-
     var app = express();
     app.use('/graphql', expressGraphQL({
         schema: schema,
         graphiql: true,
-        context: { pgClient },
+        context: { knex },
     }));
 
     const PORT = process.env.PORT || 5000;
