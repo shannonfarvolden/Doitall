@@ -1,11 +1,15 @@
 const userResolvers = {
     UserQuery: {
-        Users: (_, __, context) => context.pgClient
-            .query('SELECT * from users')
-            .then(res => res.rows),
-        User: (_, { id }, context) => context.pgClient
-            .query('SELECT * from users WHERE id = $1', [id])
-            .then(res => res.rows[0]),
+        Users: (_, __, context) => context.knex
+          .select()
+          .from('users')
+          .orderBy('created_at', 'DESC')
+          .then(users => { return users }),
+        User: (_, { id }, context) => context.knex
+          .first()
+          .from('users')
+          .where({id})
+          .then(user => { return user }),
     }
 };
 
