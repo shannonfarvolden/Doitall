@@ -1,5 +1,5 @@
 const userResolvers = {
-    UserQuery: {
+    Query: {
         Users: (_, __, context) => context.knex
           .select()
           .from('users')
@@ -12,6 +12,5 @@ const userResolvers = {
           .then(user => { return user }),
     }
 };
-
 
 module.exports = userResolvers;
