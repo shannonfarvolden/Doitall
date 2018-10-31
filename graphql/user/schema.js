@@ -1,8 +1,5 @@
 const User = `
-schema {
-  query: UserQuery
-}
-type UserQuery {
+type Query {
   User(id: ID!): User
   Users: [User]
 }
@@ -13,7 +10,6 @@ type User {
   password: String
   confirmPassword: String
 }
-
 `;
 
 module.exports = User;
