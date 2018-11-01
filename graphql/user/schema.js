@@ -1,5 +1,7 @@
+import Base from '../base';
+
 const User = `
-type Query {
+extend type Query {
   User(id: ID!): User
   Users: [User]
 }
@@ -12,4 +14,4 @@ type User {
 }
 `;
 
-module.exports = User;
+export default () => [Base, User];

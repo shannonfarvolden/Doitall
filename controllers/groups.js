@@ -15,9 +15,9 @@ const GroupsController = {
 
   //POST: Creating new group
   async create (req, res, next) {
-    const {title, description, category, public, group_size, owner} =  req.body;
+    const {title, description, category, is_public, group_size, owner} =  req.body;
     await knex
-      .insert({title, description, category, public, group_size, owner})
+      .insert({title, description, category, is_public, group_size, owner})
       .into('groups')
       .catch(error => res.send(error));
     res.send({ message: 'New group created!' });

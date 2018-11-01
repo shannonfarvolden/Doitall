@@ -1,15 +1,11 @@
-const { makeExecutableSchema, addMockFunctionsToSchema, mergeSchemas } = require('graphql-tools');
+const { makeExecutableSchema } = require('graphql-tools');
+const Base = require('./base');
 const User = require('./user/schema');
+const Group = require('./group/schema');
 const resolvers = require('./resolvers');
 
-const userSchema = makeExecutableSchema({
-    typeDefs: User
-});
-
-addMockFunctionsToSchema({ schema: userSchema });
-
-const schema = mergeSchemas({
-    schemas: [userSchema],
+const schema = makeExecutableSchema({
+    typeDefs: [Base, User, Group],
     resolvers
 });
 
