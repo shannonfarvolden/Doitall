@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('../../config');
+require('dotenv').config();
 
 export const Query = {
   Users: (_, __, context) => context.knex
@@ -26,6 +26,6 @@ export const Mutation = {
     return jwt.sign({
       id: newUser.id,
       username: newUser.username
-    }, config.secret, { expiresIn: 86400 });
+    }, process.env.JWT_SECRET, { expiresIn: 86400 });
   }
 }
