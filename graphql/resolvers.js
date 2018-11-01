@@ -1,6 +1,9 @@
-const userResolvers = require('./user/resolvers');
-const resolvers = {
-  ...userResolvers,
-};
+import { Query as userQuery }from './user/resolvers';
+import { Query as groupQuery } from './group/resolvers';
 
-module.exports = resolvers;
+export default {
+  Query: {
+    ...userQuery,
+    ...groupQuery
+  }
+};
