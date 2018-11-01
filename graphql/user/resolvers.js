@@ -21,11 +21,25 @@ export const Mutation = {
       .insert({username, email, password: bcrypt.hashSync(password, 10)})
       .into('users')
       .returning('*')
-      .then(res => res[0])
+      .then(res => res[0]);
 
     return jwt.sign({
       id: newUser.id,
       username: newUser.username
+    }, process.env.JWT_SECRET, { expiresIn: 86400 });
+  },
+  login: async (_, { username, password }, context) => {
+    const user = await context.knex.first().from('users').where({username});
+    if (!user) {
+      throw new Error('No user found');
+    }
+    const valid = bcrypt.compareSync(password, user.password);
+    if (!valid) {
+      throw new Error('Incorrect password');
+    }
+    return jwt.sign({
+      id: user.id,
+      username: user.username
     }, process.env.JWT_SECRET, { expiresIn: 86400 });
   }
 }

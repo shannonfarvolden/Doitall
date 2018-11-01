@@ -6,7 +6,8 @@ extend type Query {
   Users: [User]
 }
 extend type Mutation {
-    createUser (email: String, username: String, password: String): String
+    createUser (email: String!, username: String!, password: String!): String
+    login (username: String!, password: String!): String
 }
 type User {
   id: ID
