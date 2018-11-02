@@ -4,7 +4,6 @@ const expressGraphQL = require('express-graphql');
 const app = express();
 const knex = require('./db');
 const schema = require('./graphql/schema');
-const root = require('./routes');
 
 const start = async () => {
     var app = express();
