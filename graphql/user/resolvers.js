@@ -3,11 +3,16 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 export const Query = {
-  Users: (_, __, context) => context.knex
+  Users: (_, __, context) => {
+    if(!context.user) {
+      throw new Error('You are not authenticated!, please login first.')
+    }
+    return context.knex
     .select()
     .from('users')
     .orderBy('created_at', 'DESC')
-    .then(users => { return users }),
+    .then(users => { return users })
+  },
   User: (_, { id }, context) => context.knex
     .first()
     .from('users')
