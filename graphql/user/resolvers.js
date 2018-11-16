@@ -16,9 +16,9 @@ export const Query = {
 }
 
 export const Mutation = {
-  createUser: async (_, { username, email, password }, context) => {
+  createUser: async (_, { username, email, password, role }, context) => {
     const newUser = await context.knex
-      .insert({username, email, password: bcrypt.hashSync(password, 10)})
+      .insert({username, email, password: bcrypt.hashSync(password, 10), role})
       .into('users')
       .returning('*')
       .then(res => res[0]);

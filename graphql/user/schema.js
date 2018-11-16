@@ -8,7 +8,7 @@ extend type Query {
   Users: [User] @isAuthenticated
 }
 extend type Mutation {
-    createUser (email: String!, username: String!, password: String!): String
+    createUser (email: String!, username: String!, password: String!, role: String!): String
     login (username: String!, password: String!): String
 }
 type User {
@@ -16,6 +16,7 @@ type User {
   email: String
   username: String
   password: String
+  role: String
 }
 `;
 

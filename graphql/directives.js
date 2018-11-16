@@ -9,7 +9,6 @@ const directiveResolvers = {
         message: 'You are not authenticated!, please login first.!'
       });
     }
-    console.l
     return result;
   },
 };
