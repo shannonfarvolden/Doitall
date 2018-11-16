@@ -1,9 +1,11 @@
 import Base from '../base';
 
 const User = `
+directive @isAuthenticated on QUERY | FIELD
+
 extend type Query {
   User(id: ID!): User
-  Users: [User]
+  Users: [User] @isAuthenticated
 }
 extend type Mutation {
     createUser (email: String!, username: String!, password: String!): String
