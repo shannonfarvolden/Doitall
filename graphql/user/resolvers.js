@@ -16,16 +16,17 @@ export const Query = {
 }
 
 export const Mutation = {
-  createUser: async (_, { username, email, password }, context) => {
+  createUser: async (_, { username, email, password, role }, context) => {
     const newUser = await context.knex
-      .insert({username, email, password: bcrypt.hashSync(password, 10)})
+      .insert({username, email, password: bcrypt.hashSync(password, 10), role})
       .into('users')
       .returning('*')
       .then(res => res[0]);
 
     return jwt.sign({
       id: newUser.id,
-      username: newUser.username
+      username: newUser.username,
+      role: newUser.role,
     }, process.env.JWT_SECRET, { expiresIn: 86400 });
   },
   login: async (_, { username, password }, context) => {
@@ -39,7 +40,8 @@ export const Mutation = {
     }
     return jwt.sign({
       id: user.id,
-      username: user.username
+      username: user.username,
+      role: user.role,
     }, process.env.JWT_SECRET, { expiresIn: 86400 });
   }
 }

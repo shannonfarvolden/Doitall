@@ -4,13 +4,25 @@ const expressGraphQL = require('express-graphql');
 const app = express();
 const knex = require('./db');
 const schema = require('./graphql/schema');
+const jwt = require('express-jwt');
+require('dotenv').config();
 
 const start = async () => {
-    var app = express();
-    app.use('/graphql', expressGraphQL({
+    const app = express();
+    const auth = jwt({
+      secret: process.env.JWT_SECRET,
+      credentialsRequired: false
+    })
+
+    app.use('/graphql', auth, expressGraphQL((req) => {
+      return {
         schema: schema,
         graphiql: true,
-        context: { knex },
+        context: {
+          knex,
+          user: req.user
+        }
+      }
     }));
 
     const PORT = process.env.PORT || 5000;
