@@ -9,7 +9,7 @@ extend type Query {
   Users: [User] @hasRole(role: "admin")
 }
 extend type Mutation {
-    createUser (email: String!, username: String!, password: String!, role: String!): String
+    createUser (email: String!, username: String!, password: String!): String
     login (username: String!, password: String!): String
 }
 type User {
